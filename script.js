@@ -4,12 +4,7 @@ if ('scrollRestoration' in history) {
 
 if (!window.location.hash) {
   window.scrollTo(0, 0);
-  // persisted === true means this pageshow is a back/forward bfcache restore,
-  // which already keeps the scroll position the user left off at - only force
-  // the reset on a genuine reload.
-  window.addEventListener('pageshow', (event) => {
-    if (!event.persisted) window.scrollTo(0, 0);
-  }, { once: true });
+  window.addEventListener('pageshow', () => window.scrollTo(0, 0), { once: true });
 }
 
 const revealObserver = new IntersectionObserver(
@@ -54,23 +49,9 @@ if (!supportsScrollTimeline) {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (heroStory && lineOne && lineTwo && !reduceMotion) {
-    let isMobileHero = false;
-    let firstLineRange = [0.06, 0.36];
-    let secondLineRange = [0.52, 0.82];
-    let heroTop = 0;
-    let scrollable = 0;
-
-    // Measured only on load/resize, not on every scroll frame, so scrolling
-    // through the hero never forces a getBoundingClientRect() layout read
-    // while the background video is playing.
-    const measure = () => {
-      const rect = heroStory.getBoundingClientRect();
-      heroTop = rect.top + window.scrollY;
-      scrollable = rect.height - window.innerHeight;
-      isMobileHero = window.matchMedia('(max-width: 820px)').matches;
-      firstLineRange = isMobileHero ? [0.2, 0.42] : [0.06, 0.36];
-      secondLineRange = isMobileHero ? [0.48, 0.74] : [0.52, 0.82];
-    };
+    const isMobileHero = window.matchMedia('(max-width: 820px)').matches;
+    const firstLineRange = isMobileHero ? [0.2, 0.42] : [0.06, 0.36];
+    const secondLineRange = isMobileHero ? [0.48, 0.74] : [0.52, 0.82];
 
     const fadeRange = (progress, start, end) => {
       if (progress <= start || progress >= end) return 0;
@@ -89,8 +70,10 @@ if (!supportsScrollTimeline) {
     let ticking = false;
     const update = () => {
       ticking = false;
+      const rect = heroStory.getBoundingClientRect();
+      const scrollable = rect.height - window.innerHeight;
       if (scrollable <= 0) return;
-      const progress = Math.min(Math.max((window.scrollY - heroTop) / scrollable, 0), 1);
+      const progress = Math.min(Math.max(-rect.top / scrollable, 0), 1);
 
       setLine(lineOne, fadeRange(progress, ...firstLineRange));
       setLine(lineTwo, fadeRange(progress, ...secondLineRange));
@@ -102,14 +85,8 @@ if (!supportsScrollTimeline) {
       requestAnimationFrame(update);
     };
 
-    const onResize = () => {
-      measure();
-      onScroll();
-    };
-
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onResize);
-    measure();
+    window.addEventListener('resize', onScroll);
     update();
   }
 }
