@@ -135,7 +135,7 @@ h2 { margin-bottom: 24px; font-size: clamp(42px, 5.5vw, 76px); line-height: .98;
   .nav a:first-child { font-size: 0; }
   .nav a:first-child::after { content: "О нас"; font-size: 13px; }
   .nav a:nth-child(3) { display: none; }
-  .hero-story { height: 300vh; }
+  .hero-story { height: 250vh; }
   .hero-sticky { background: #aab4aa; }
   .hero-media { inset: 0; }
   .hero-media video { object-position: 70% center; }
@@ -143,12 +143,12 @@ h2 { margin-bottom: 24px; font-size: clamp(42px, 5.5vw, 76px); line-height: .98;
   .hero-copy { inset: auto 0 0; width: 100%; min-height: 58%; padding: 120px 20px 42px; justify-content: flex-end; background: linear-gradient(0deg, rgba(225,228,219,.84) 0%, rgba(225,228,219,.48) 56%, transparent 100%); }
   h1 { font-size: clamp(58px, 18vw, 86px); }
   .hero-lead { max-width: 460px; font-size: 17px; }
-  .story-lines { z-index: 2; }
-  .story-line { left: 20px; top: auto; bottom: clamp(92px, 14vh, 132px); width: min(520px, calc(100% - 40px)); font-size: clamp(30px, 7.5vw, 46px); text-shadow: 0 3px 24px rgba(18,30,22,.5); }
+  .story-lines { z-index: 4; }
+  .story-line { left: 20px; top: auto; bottom: clamp(118px, 18vh, 168px); width: min(520px, calc(100% - 40px)); font-size: clamp(30px, 7.5vw, 46px); text-shadow: 0 3px 24px rgba(18,30,22,.5); }
   @supports (animation-timeline: scroll()) {
     .story-line--one, .story-line--two { animation-name: line-mobile; }
-    .story-line--one { animation-range: 92vh 158vh; }
-    .story-line--two { animation-range: 186vh 270vh; }
+    .story-line--one { animation-range: 64vh 118vh; }
+    .story-line--two { animation-range: 124vh 188vh; }
   }
   .about, .contact, .journey-inner { grid-template-columns: 1fr; }
   .about { padding: 42px 0 100px; gap: 56px; }
@@ -180,7 +180,7 @@ h2 { margin-bottom: 24px; font-size: clamp(42px, 5.5vw, 76px); line-height: .98;
   .hero-actions { display: grid; grid-template-columns: 1fr 1fr; }
   .glass-button { min-height: 48px; padding: 0 12px; font-size: 14px; white-space: nowrap; }
   .hero-media video { object-position: 72% center; }
-  .story-line { left: 16px; bottom: clamp(82px, 13vh, 116px); width: calc(100% - 32px); font-size: clamp(27px, 8vw, 35px); }
+  .story-line { left: 16px; bottom: clamp(104px, 17vh, 148px); width: calc(100% - 32px); font-size: clamp(27px, 8vw, 35px); }
   .section-shell { width: min(100% - 28px, 1180px); }
   h2 { font-size: 43px; }
   .about-photo { max-width: 92%; }

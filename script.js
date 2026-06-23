@@ -50,8 +50,8 @@ if (!supportsScrollTimeline) {
 
   if (heroStory && lineOne && lineTwo && !reduceMotion) {
     const isMobileHero = window.matchMedia('(max-width: 820px)').matches;
-    const firstLineRange = isMobileHero ? [0.28, 0.5] : [0.06, 0.36];
-    const secondLineRange = isMobileHero ? [0.62, 0.88] : [0.52, 0.82];
+    const firstLineRange = isMobileHero ? [0.2, 0.42] : [0.06, 0.36];
+    const secondLineRange = isMobileHero ? [0.48, 0.74] : [0.52, 0.82];
 
     const fadeRange = (progress, start, end) => {
       if (progress <= start || progress >= end) return 0;
