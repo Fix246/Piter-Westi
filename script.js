@@ -34,59 +34,60 @@ if (video) {
   });
 }
 
-// "Привет! Давай познакомимся" / "Мы - Piter-Westi..." rely on CSS scroll-driven
-// animations (animation-timeline: scroll()), which Safari and Firefox do not
-// support yet. Without this fallback the story lines would stay at opacity: 0
-// forever in those browsers. Detect support and, if missing, drive the same
-// fade with a rAF-throttled scroll handler (the one case where a scroll
-// listener is justified: it only runs in browsers lacking the native API).
-const supportsScrollTimeline = window.CSS?.supports?.('animation-timeline', 'scroll()');
+const heroStory = document.querySelector('.hero-story');
+const heroSticky = document.querySelector('.hero-sticky');
+const heroCopy = document.querySelector('.hero-copy');
+const lineOne = document.querySelector('.story-line--one');
+const lineTwo = document.querySelector('.story-line--two');
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-if (!supportsScrollTimeline) {
-  const heroStory = document.querySelector('.hero-story');
-  const lineOne = document.querySelector('.story-line--one');
-  const lineTwo = document.querySelector('.story-line--two');
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (heroStory && heroSticky && heroCopy && lineOne && lineTwo) {
+  const fadeRange = (progress, start, end) => {
+    if (progress <= start || progress >= end) return 0;
+    const mid = (start + end) / 2;
+    const half = (end - start) / 2;
+    return 1 - Math.abs(progress - mid) / half;
+  };
 
-  if (heroStory && lineOne && lineTwo && !reduceMotion) {
-    const isMobileHero = window.matchMedia('(max-width: 820px)').matches;
-    const firstLineRange = isMobileHero ? [0.2, 0.42] : [0.06, 0.36];
-    const secondLineRange = isMobileHero ? [0.48, 0.74] : [0.52, 0.82];
+  const setLine = (el, amount) => {
+    el.style.opacity = amount.toFixed(2);
+    el.style.transform = `translateY(${(-38 - amount * 12).toFixed(2)}%)`;
+  };
 
-    const fadeRange = (progress, start, end) => {
-      if (progress <= start || progress >= end) return 0;
-      const mid = (start + end) / 2;
-      const half = (end - start) / 2;
-      return 1 - Math.abs(progress - mid) / half;
-    };
+  let ticking = false;
+  const updateHero = () => {
+    ticking = false;
+    const rect = heroStory.getBoundingClientRect();
+    const scrollable = rect.height - window.innerHeight;
+    if (scrollable <= 0) return;
 
-    const setLine = (el, amount) => {
-      el.style.opacity = amount.toFixed(2);
-      el.style.transform = isMobileHero
-        ? `translateY(${(1 - amount) * 18}px)`
-        : `translate(-50%, ${-50 + (1 - amount) * 8}%)`;
-    };
+    const progress = Math.min(Math.max(-rect.top / scrollable, 0), 1);
+    const copyAmount = Math.min(Math.max(progress / 0.25, 0), 1);
+    const exitStart = window.innerHeight * 1.25;
+    const exitDistance = window.innerHeight * 0.5;
+    const exitAmount = Math.min(Math.max((exitStart - rect.bottom) / exitDistance, 0), 1);
+    const isFixed = rect.top <= 0 && rect.bottom > 0;
+    const isEnded = rect.bottom <= 0;
 
-    let ticking = false;
-    const update = () => {
-      ticking = false;
-      const rect = heroStory.getBoundingClientRect();
-      const scrollable = rect.height - window.innerHeight;
-      if (scrollable <= 0) return;
-      const progress = Math.min(Math.max(-rect.top / scrollable, 0), 1);
+    heroStory.classList.toggle('is-fixed', isFixed);
+    heroStory.classList.toggle('is-ended', isEnded);
+    heroSticky.style.opacity = (1 - exitAmount).toFixed(2);
+    if (reduceMotion) return;
 
-      setLine(lineOne, fadeRange(progress, ...firstLineRange));
-      setLine(lineTwo, fadeRange(progress, ...secondLineRange));
-    };
+    heroCopy.style.opacity = (1 - copyAmount).toFixed(2);
+    heroCopy.style.transform = `translateY(${(-24 * copyAmount).toFixed(2)}px)`;
+    setLine(lineOne, fadeRange(progress, 0.3, 0.62));
+    setLine(lineTwo, fadeRange(progress, 0.64, 0.96));
+  };
 
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(update);
-    };
+  const queueHeroUpdate = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(updateHero);
+  };
 
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    update();
-  }
+  window.addEventListener('scroll', queueHeroUpdate, { passive: true });
+  window.addEventListener('resize', queueHeroUpdate);
+  window.addEventListener('pageshow', queueHeroUpdate);
+  updateHero();
 }
