@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://piter-westi.ru/sitemap.xml

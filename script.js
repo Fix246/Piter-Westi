@@ -1,0 +1,70 @@
+const revealObserver = new IntersectionObserver(
+  (entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  },
+  { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+);
+
+document.querySelectorAll('.reveal').forEach((section) => revealObserver.observe(section));
+document.querySelector('#year').textContent = new Date().getFullYear();
+
+const video = document.querySelector('.hero-media video');
+video?.play().catch(() => {
+  video.setAttribute('controls', '');
+  video.setAttribute('aria-label', 'Видео питомника. Нажмите, чтобы воспроизвести');
+});
+
+// "Привет! Давай познакомимся" / "Мы - Piter-Westi..." rely on CSS scroll-driven
+// animations (animation-timeline: scroll()), which Safari and Firefox do not
+// support yet. Without this fallback the story lines would stay at opacity: 0
+// forever in those browsers. Detect support and, if missing, drive the same
+// fade with a rAF-throttled scroll handler (the one case where a scroll
+// listener is justified: it only runs in browsers lacking the native API).
+const supportsScrollTimeline = window.CSS?.supports?.('animation-timeline', 'scroll()');
+
+if (!supportsScrollTimeline) {
+  const heroStory = document.querySelector('.hero-story');
+  const lineOne = document.querySelector('.story-line--one');
+  const lineTwo = document.querySelector('.story-line--two');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (heroStory && lineOne && lineTwo && !reduceMotion) {
+    const fadeRange = (progress, start, end) => {
+      if (progress <= start || progress >= end) return 0;
+      const mid = (start + end) / 2;
+      const half = (end - start) / 2;
+      return 1 - Math.abs(progress - mid) / half;
+    };
+
+    const setLine = (el, amount) => {
+      el.style.opacity = amount.toFixed(2);
+      el.style.transform = `translate(-50%, ${-50 + (1 - amount) * 8}%)`;
+    };
+
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const rect = heroStory.getBoundingClientRect();
+      const scrollable = rect.height - window.innerHeight;
+      if (scrollable <= 0) return;
+      const progress = Math.min(Math.max(-rect.top / scrollable, 0), 1);
+
+      setLine(lineOne, fadeRange(progress, 0.06, 0.36));
+      setLine(lineTwo, fadeRange(progress, 0.52, 0.82));
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
+  }
+}
