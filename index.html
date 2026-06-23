@@ -23,9 +23,9 @@
     <nav class="nav" aria-label="Разделы сайта">
       <a href="#about">О питомнике</a>
       <a href="#puppies">Щенки</a>
-      <a href="#contact">Контакты</a>
+      <a href="#journey">Переезд</a>
     </nav>
-    <a class="header-contact" href="#contact">Связаться</a>
+    <a class="header-contact" href="#contact-info">Связаться</a>
   </header>
 
   <main id="main">
@@ -37,7 +37,7 @@
           <p class="hero-lead">Щенки от ответственных заводчиков с документами, прививками по возрасту и заботливой социализацией</p>
           <div class="hero-actions">
             <a class="glass-button glass-button--light" href="#puppies">Посмотреть щенков</a>
-            <a class="glass-button glass-button--ghost" href="#contact">Связаться</a>
+            <a class="glass-button glass-button--ghost" href="#contact-info">Связаться</a>
           </div>
         </div>
         <div class="hero-media">
@@ -105,7 +105,7 @@
       </div>
     </section>
 
-    <section class="journey reveal" aria-labelledby="journey-title">
+    <section class="journey reveal" id="journey" aria-labelledby="journey-title">
       <div class="section-shell journey-inner">
         <div class="journey-title-wrap">
           <h2 id="journey-title">Как проходит переезд домой</h2>
@@ -122,16 +122,15 @@
 
     <section class="contact section-shell reveal" id="contact" aria-labelledby="contact-title">
       <div class="contact-photo"><img src="assets/westie-window.jpg" alt="Вестик встречает гостей у окна" width="1200" height="1600" loading="lazy"></div>
-      <div class="contact-copy">
+      <div class="contact-copy" id="contact-info">
         <p class="section-kicker">Будем знакомы</p>
         <h2 id="contact-title">Расскажите, какого друга вы ждёте</h2>
         <p>Напишите удобным способом. Ответим на вопросы, расскажем о щенках и договоримся о знакомстве.</p>
         <div class="contact-actions" aria-label="Способы связи">
-          <a href="https://wa.me/" rel="noopener" target="_blank">WhatsApp</a>
-          <a href="https://t.me/" rel="noopener" target="_blank">Telegram</a>
+          <a href="https://vk.com/" rel="noopener" target="_blank">VK</a>
+          <a href="#" rel="noopener" target="_blank">MAX</a>
           <a href="tel:+70000000000">Позвонить</a>
         </div>
-        <small>Замените ссылки и номер телефона на актуальные перед публикацией.</small>
       </div>
     </section>
   </main>
@@ -139,7 +138,8 @@
   <footer class="footer">
     <a class="brand" href="#top">Piter-Westi</a>
     <p>Питомник вест-хайленд-уайт-терьеров</p>
-    <p>© <span id="year"></span> Piter-Westi</p>
+    <p>© <span id="year"></span> Piter-Westi. Все права защищены.</p>
+    <p class="footer-legal">Информация на сайте не является публичной офертой. Наличие щенков, условия передачи и стоимость уточняются при личном общении. Щенки передаются с ветеринарным паспортом и документами РКФ в соответствии с правилами оформления помётов.</p>
   </footer>
   <script src="script.js" defer></script>
 </body>

@@ -41,6 +41,10 @@ if (!supportsScrollTimeline) {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (heroStory && lineOne && lineTwo && !reduceMotion) {
+    const isMobileHero = window.matchMedia('(max-width: 820px)').matches;
+    const firstLineRange = isMobileHero ? [0.16, 0.42] : [0.06, 0.36];
+    const secondLineRange = isMobileHero ? [0.5, 0.82] : [0.52, 0.82];
+
     const fadeRange = (progress, start, end) => {
       if (progress <= start || progress >= end) return 0;
       const mid = (start + end) / 2;
@@ -61,8 +65,8 @@ if (!supportsScrollTimeline) {
       if (scrollable <= 0) return;
       const progress = Math.min(Math.max(-rect.top / scrollable, 0), 1);
 
-      setLine(lineOne, fadeRange(progress, 0.06, 0.36));
-      setLine(lineTwo, fadeRange(progress, 0.52, 0.82));
+      setLine(lineOne, fadeRange(progress, ...firstLineRange));
+      setLine(lineTwo, fadeRange(progress, ...secondLineRange));
     };
 
     const onScroll = () => {
