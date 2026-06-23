@@ -130,6 +130,14 @@ h2 { margin-bottom: 24px; font-size: clamp(42px, 5.5vw, 76px); line-height: .98;
 @keyframes line-two { 0%,100% { opacity: 0; transform: translateY(-38%); } 28%,72% { opacity: 1; transform: translateY(-50%); } }
 
 @media (max-width: 820px) {
+  /* backdrop-filter over a playing hero video is the main source of scroll
+     jank on mobile GPUs; drop it below this breakpoint and compensate with
+     a more opaque background instead. */
+  .site-header { backdrop-filter: none; background: rgba(250,249,244,.94); }
+  .glass-button { backdrop-filter: none; }
+  .glass-button--light { background: rgba(255,255,255,.9); }
+  .glass-button--ghost { background: rgba(46,64,53,.55); }
+  .puppy-card__body { backdrop-filter: none; background: rgba(28,40,33,.82); }
   .site-header { grid-template-columns: minmax(92px, 1fr) auto auto; gap: 14px; padding-left: 18px; }
   .nav { display: flex; gap: 16px; font-size: 13px; }
   .nav a:first-child { font-size: 0; }
