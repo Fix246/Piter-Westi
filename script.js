@@ -30,8 +30,7 @@ if (video) {
 
   video.play().catch(() => {
     showVideo();
-    video.setAttribute('controls', '');
-    video.setAttribute('aria-label', 'Видео питомника. Нажмите, чтобы воспроизвести');
+    video.removeAttribute('controls');
   });
 }
 
@@ -51,8 +50,8 @@ if (!supportsScrollTimeline) {
 
   if (heroStory && lineOne && lineTwo && !reduceMotion) {
     const isMobileHero = window.matchMedia('(max-width: 820px)').matches;
-    const firstLineRange = isMobileHero ? [0.16, 0.42] : [0.06, 0.36];
-    const secondLineRange = isMobileHero ? [0.5, 0.82] : [0.52, 0.82];
+    const firstLineRange = isMobileHero ? [0.28, 0.5] : [0.06, 0.36];
+    const secondLineRange = isMobileHero ? [0.62, 0.88] : [0.52, 0.82];
 
     const fadeRange = (progress, start, end) => {
       if (progress <= start || progress >= end) return 0;
@@ -63,7 +62,9 @@ if (!supportsScrollTimeline) {
 
     const setLine = (el, amount) => {
       el.style.opacity = amount.toFixed(2);
-      el.style.transform = `translate(-50%, ${-50 + (1 - amount) * 8}%)`;
+      el.style.transform = isMobileHero
+        ? `translateY(${(1 - amount) * 18}px)`
+        : `translate(-50%, ${-50 + (1 - amount) * 8}%)`;
     };
 
     let ticking = false;
