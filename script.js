@@ -57,23 +57,22 @@ if (heroStory && heroCopy && lineOne && lineTwo) {
   const updateHero = () => {
     ticking = false;
     const rect = heroStory.getBoundingClientRect();
-    if (rect.height <= 0) return;
+    const scrollable = rect.height - window.innerHeight;
+    if (scrollable <= 0) return;
 
-    const progress = Math.min(Math.max(-rect.top / rect.height, 0), 1);
+    const progress = Math.min(Math.max(-rect.top / scrollable, 0), 1);
     const copyAmount = Math.min(Math.max(progress / 0.2, 0), 1);
-    const isFixed = rect.top <= 0 && rect.bottom > 0;
-    const isEnded = rect.bottom <= 0;
-    const heroY = Math.min(rect.bottom - window.innerHeight, 0);
+    const isFixed = rect.top <= 0 && rect.bottom > window.innerHeight;
+    const isEnded = rect.bottom <= window.innerHeight;
 
     heroStory.classList.toggle('is-fixed', isFixed);
     heroStory.classList.toggle('is-ended', isEnded);
-    heroStory.style.setProperty('--hero-y', `${heroY.toFixed(2)}px`);
     if (reduceMotion) return;
 
     heroCopy.style.opacity = (1 - copyAmount).toFixed(2);
     heroCopy.style.transform = `translateY(${(-24 * copyAmount).toFixed(2)}px)`;
-    setLine(lineOne, holdRange(progress, 0.24, 0.34, 0.48, 0.58));
-    setLine(lineTwo, holdRange(progress, 0.6, 0.7, 0.88, 0.98));
+    setLine(lineOne, holdRange(progress, 0.22, 0.3, 0.42, 0.5));
+    setLine(lineTwo, holdRange(progress, 0.54, 0.62, 0.78, 0.86));
   };
 
   const queueHeroUpdate = () => {

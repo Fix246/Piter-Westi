@@ -33,8 +33,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
 .hero-story { position: relative; height: 250dvh; }
 .hero-sticky { position: absolute; inset: 0 0 auto; height: 100dvh; min-height: 100svh; overflow: hidden; background: #d9ded6; }
-.hero-story.is-fixed .hero-sticky { position: fixed; inset: 0 0 auto; z-index: 2; width: 100%; transform: translate3d(0, var(--hero-y, 0px), 0); }
-.hero-story.is-ended .hero-sticky { position: absolute; inset: auto 0 0; transform: none; }
+.hero-story.is-fixed .hero-sticky { position: fixed; inset: 0 0 auto; z-index: 2; width: 100%; }
+.hero-story.is-ended .hero-sticky { position: absolute; inset: auto 0 0; }
 .hero-copy { position: absolute; inset: 0 auto 0 0; z-index: 3; width: min(620px, 52vw); padding: clamp(130px, 16vh, 176px) 4vw 60px max(5vw, calc((100vw - 1180px)/2)); display: flex; flex-direction: column; justify-content: center; }
 .hero-kicker, .section-kicker { margin: 0 0 18px; color: var(--sage); font-size: 12px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
 h1, h2, h3, p { margin-top: 0; }
