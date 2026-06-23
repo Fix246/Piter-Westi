@@ -13,10 +13,18 @@ document.querySelectorAll('.reveal').forEach((section) => revealObserver.observe
 document.querySelector('#year').textContent = new Date().getFullYear();
 
 const video = document.querySelector('.hero-media video');
-video?.play().catch(() => {
-  video.setAttribute('controls', '');
-  video.setAttribute('aria-label', 'Видео питомника. Нажмите, чтобы воспроизвести');
-});
+if (video) {
+  const showVideo = () => video.classList.add('is-ready');
+  if (video.readyState >= 2) showVideo();
+  video.addEventListener('loadeddata', showVideo, { once: true });
+  video.addEventListener('canplay', showVideo, { once: true });
+
+  video.play().catch(() => {
+    showVideo();
+    video.setAttribute('controls', '');
+    video.setAttribute('aria-label', 'Видео питомника. Нажмите, чтобы воспроизвести');
+  });
+}
 
 // "Привет! Давай познакомимся" / "Мы - Piter-Westi..." rely on CSS scroll-driven
 // animations (animation-timeline: scroll()), which Safari and Firefox do not
